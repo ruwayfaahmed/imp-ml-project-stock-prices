@@ -163,6 +163,8 @@ def test(data_loader, *args, **kwargs):
     total_loss = 0.0
     num_samples = 0
 
+    y_test_dfs = []
+
     with torch.no_grad():
         for data in data_loader:
             inputs, targets = data
@@ -183,14 +185,12 @@ def test(data_loader, *args, **kwargs):
             dummies = scaler.inverse_transform(dummies)
 
             new_y_test = dc(dummies[:, 0])
+            y_test_dfs.append(pd.DataFrame({'Predictions': test_predictions, 'Actual': new_y_test}))
 
-            plt.plot(new_y_test, label='Actual Close')
-            plt.plot(test_predictions, label='Predicted Close')
-            plt.xlabel('Day')
-            plt.ylabel('Close')
-            plt.ylim(0, 1000)
-            plt.legend()
-            plt.show()
+
+    df = pd.concat(y_test_dfs)
+    print('Comparison between Predictions vs Actual')
+    print(df)
 
     # Calculate the mean squared error
     mse = total_loss / num_samples
@@ -198,5 +198,5 @@ def test(data_loader, *args, **kwargs):
     print(f"Mean Squared Error (MSE): {mse}")
 
 
-train(train_loader)
+# train(train_loader)
 test(test_loader)
