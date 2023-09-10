@@ -1,5 +1,4 @@
 
-# dataset @ https://finance.yahoo.com/quote/MSFT/history/
 import time
 import pandas as pd
 import numpy as np
@@ -198,5 +197,6 @@ def test(data_loader, *args, **kwargs):
     print(f"Mean Squared Error (MSE): {mse}")
 
 
-# train(train_loader)
-test(test_loader)
+if __name__ == '__main__':
+    train(train_loader)
+    test(test_loader)
